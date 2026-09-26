@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABDULLOH TRANSLATE</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Temalar */
+    body[data-theme="serika-dark"] { --bg-color: #323437; --main-color: #e2b714; --sub-color: #646669; --text-color: #00e1ff; --error-color: #ca4754; --sub-alt-color: #2c2e31; }
+    body[data-theme="fire-flame"] { --bg-color: #0f0a0a; --main-color: #ff5500; --sub-color: #884422; --text-color: #ffcc00; --error-color: #ff0033; --sub-alt-color: #1a1010; }
+    body[data-theme="cyberpunk"] { --bg-color: #0d0f18; --main-color: #00ffcc; --sub-color: #414b6e; --text-color: #ff007f; --error-color: #ff3300; --sub-alt-color: #151926; }
+    body[data-theme="nord"] { --bg-color: #2e3440; --main-color: #88c0d0; --sub-color: #4c566a; --text-color: #d8dee9; --error-color: #bf616a; --sub-alt-color: #242933; }
+    body[data-theme="dracula"] { --bg-color: #282a36; --main-color: #bd93f9; --sub-color: #6272a4; --text-color: #f8f8f2; --error-color: #ff5555; --sub-alt-color: #21222c; }
+    body[data-theme="matrix"] { --bg-color: #000000; --main-color: #15ff00; --sub-color: #006600; --text-color: #00ff00; --error-color: #da1212; --sub-alt-color: #051105; }
+    body[data-theme="monokai"] { --bg-color: #272822; --main-color: #a6e22e; --sub-color: #75715e; --text-color: #f8f8f2; --error-color: #f92672; --sub-alt-color: #1e1f1c; }
+    body[data-theme="one-dark"] { --bg-color: #282c34; --main-color: #98c379; --sub-color: #5c6370; --text-color: #abb2bf; --error-color: #e06c75; --sub-alt-color: #21252b; }
+    body[data-theme="retro"] { --bg-color: #dad3c1; --main-color: #1d1d1d; --sub-color: #8b8577; --text-color: #1d1d1d; --error-color: #bf3f3f; --sub-alt-color: #c8c1b0; }
+    body[data-theme="chalk"] { --bg-color: #263238; --main-color: #ffa726; --sub-color: #546e7a; --text-color: #eceff1; --error-color: #ef5350; --sub-alt-color: #1e272c; }
+    body[data-theme="sunset-glow"] { --bg-color: #18122B; --main-color: #FF8E9E; --sub-color: #635985; --text-color: #FFC436; --error-color: #E94560; --sub-alt-color: #221738; }
+    body[data-theme="galaxy-deep"] { --bg-color: #050517; --main-color: #7b2cbf; --sub-color: #3c096c; --text-color: #e0aaff; --error-color: #ff4d6d; --sub-alt-color: #0b092b; }
+    body[data-theme="emerald-city"] { --bg-color: #061a14; --main-color: #2ec4b6; --sub-color: #31572c; --text-color: #c7f9cc; --error-color: #e71d36; --sub-alt-color: #0b2b21; }
+    body[data-theme="tokyo-night"] { --bg-color: #1a1b26; --main-color: #7aa2f7; --sub-color: #565f89; --text-color: #bb9af7; --error-color: #f7768e; --sub-alt-color: #24283b; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto Mono', monospace, sans-serif; }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--sub-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 30px 8%;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+    .header-left { display: flex; align-items: center; gap: 15px; }
+
+    .brand-logo-box {
+      width: 48px; height: 48px; background: #11141a; border: 2px solid var(--text-color);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 15px rgba(0, 225, 255, 0.4); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .brand-logo-box:hover { transform: scale(1.1); box-shadow: 0 0 25px var(--text-color); }
+
+    .nav-icons { display: flex; gap: 20px; font-size: 1.1rem; }
+    .nav-icons i, .right-icons i { cursor: pointer; transition: color 0.2s; color: var(--sub-color); }
+    .nav-icons i:hover, .right-icons i:hover, .nav-icons i.active { color: var(--text-color); }
+
+    .header-center { text-align: center; cursor: pointer; }
+    
+    .logo-text {
+      font-size: 2.1rem; font-weight: 900; letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #00ffff, #7b2cbf, #ff007f, #ffcc00);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-shadow: 0px 0px 20px rgba(0, 255, 255, 0.3);
+      animation: logoGlow 4s ease infinite alternate;
+    }
+
+    @keyframes logoGlow {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .header-right { display: flex; justify-content: flex-end; }
+
+    /* Tarjimon qismi */
+    .translator-container {
+      margin: 30px auto 15px auto;
+      width: 100%;
+      max-width: 900px;
+      background-color: var(--sub-alt-color);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+    .translator-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .lang-select-box {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .lang-select {
+      background: var(--bg-color);
+      color: var(--text-color);
+      border: 1px solid var(--sub-color);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      outline: none;
+      font-weight: 600;
+      max-width: 200px;
+    }
+
+    .swap-btn {
+      background: var(--bg-color);
+      border: 1px solid var(--sub-color);
+      color: var(--main-color);
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .swap-btn:hover { transform: rotate(180deg); background: var(--sub-color); color: var(--bg-color); }
+
+    .translator-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 250px;
+    }
+
+    .pane {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 20px;
+    }
+
+    .pane:first-child {
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    textarea {
+      width: 100%;
+      height: 180px;
+      background: transparent;
+      border: none;
+      color: var(--text-color);
+      font-size: 1.1rem;
+      resize: none;
+      outline: none;
+      line-height: 1.5;
+    }
+
+    textarea::placeholder { color: var(--sub-color); opacity: 0.7; }
+
+    .pane-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 0.85rem;
+    }
+
+    .pane-icons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .pane-icons i {
+      cursor: pointer;
+      color: var(--sub-color);
+      transition: color 0.2s;
+    }
+    .pane-icons i:hover { color: var(--main-color); }
+
+    .char-counter {
+      color: var(--sub-color);
+    }
+
+    .translate-action-box {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .translate-btn {
+      background: var(--main-color);
+      color: var(--bg-color);
+      border: none;
+      padding: 12px 35px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: transform 0.1s, opacity 0.2s;
+    }
+    .translate-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    .translate-btn:active { transform: translateY(0); }
+
+    /* Tarjimalar tarixi paneli */
+    .history-container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 30px auto;
+      background-color: var(--sub-alt-color);
+      border-radius: 12px;
+      padding: 15px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .history-title-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      font-weight: bold;
+    }
+
+    .clear-history {
+      background: none; border: none; color: var(--error-color);
+      cursor: pointer; font-size: 0.8rem; font-weight: bold;
+    }
+    .clear-history:hover { text-decoration: underline; }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .history-item {
+      background: var(--bg-color);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border-left: 3px solid var(--main-color);
+      transition: transform 0.1s;
+    }
+    .history-item:hover { transform: translateX(3px); }
+    .history-text { color: var(--text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
+    .history-lang { color: var(--sub-color); font-size: 0.75rem; }
+
+    footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+    .footer-left { display: flex; gap: 15px; }
+    .footer-left a { color: var(--sub-color); text-decoration: none; }
+    .footer-left a:hover { color: var(--text-color); }
+
+    .theme-select-container { display: flex; align-items: center; gap: 8px; }
+    .theme-select {
+      background: var(--sub-alt-color); border: 1px solid var(--sub-color); color: var(--text-color);
+      padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; outline: none; font-weight: bold;
+    }
+    .theme-select option { background-color: #2c2e31; color: #d1d0c5; }
+
+    @media(max-width: 768px) {
+      .translator-body { grid-template-columns: 1fr; }
+      .pane:first-child { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    }
+  </style>
+</head>
+<body data-theme="serika-dark">
+
+  <header>
+    <div class="header-left">
+      <div class="brand-logo-box" title="ABDULLOH TRANSLATE">
+        <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="50,10 90,85 10,85" fill="url(#logoGradient)" />
+          <polygon points="50,30 75,75 25,75" fill="#11141a" />
+          <circle cx="50" cy="55" r="8" fill="url(#logoGradient)" />
+          <defs>
+            <linearGradient id="logoGradient" x1="10" y1="10" x2="90" y2="85" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#00e1ff"/>
+              <stop offset="50%" stop-color="#bd93f9"/>
+              <stop offset="100%" stop-color="#ff007f"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <div class="nav-icons">
+        <i class="fa-solid fa-language active" title="Tarjimon"></i>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <div class="logo-text">ABDULLOH TRANSLATE</div>
+    </div>
+
+    <div class="header-right">
+      <div class="right-icons" style="display: flex; gap: 15px;">
+        <i class="fa-solid fa-bell"></i>
+        <i class="fa-solid fa-user"></i>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="translator-container">
+      <div class="translator-header">
+        <div class="lang-select-box">
+          <select class="lang-select" id="source-lang">
+            <option value="uz" selected>O'zbekcha</option>
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+            <option value="tr">Türkçe</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="zh">中文 (Chinese)</option>
+            <option value="ja">日本語 (Japanese)</option>
+            <option value="ko">한국어 (Korean)</option>
+            <option value="ar">العربية (Arabic)</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="fa">فارسی (Persian)</option>
+            <option value="kk">Қазақша</option>
+            <option value="ky">Кыргызча</option>
+            <option value="az">Azərbaycan</option>
+            <option value="uk">Українська</option>
+            <option value="pl">Polski</option>
+            <option value="pt">Português</option>
+            <option value="nl">Nederlands</option>
+            <option value="sv">Svenska</option>
+            <option value="el">Ελληνικά (Greek)</option>
+            <option value="he">עברית (Hebrew)</option>
+            <option value="id">Indonesia</option>
+            <option value="ms">Melayu</option>
+            <option value="vi">Tiếng Việt</option>
+            <option value="th">ไทย (Thai)</option>
+            <option value="cs">Čeština</option>
+            <option value="ro">Română</option>
+            <option value="hu">Magyar</option>
+          </select>
+          
+          <div class="swap-btn" id="swap-langs" title="Tillarni almashtirish">
+            <i class="fa-solid fa-right-left"></i>
+          </div>
+
+          <select class="lang-select" id="target-lang">
+            <option value="uz">O'zbekcha</option>
+            <option value="en" selected>English</option>
+            <option value="ru">Русский</option>
+            <option value="tr">Türkçe</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="zh">中文 (Chinese)</option>
+            <option value="ja">日本語 (Japanese)</option>
+            <option value="ko">한국어 (Korean)</option>
+            <option value="ar">العربية (Arabic)</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="fa">فارسی (Persian)</option>
+            <option value="kk">Қазақша</option>
+            <option value="ky">Кыргызча</option>
+            <option value="az">Azərbaycan</option>
+            <option value="uk">Українська</option>
+            <option value="pl">Polski</option>
+            <option value="pt">Português</option>
+            <option value="nl">Nederlands</option>
+            <option value="sv">Svenska</option>
+            <option value="el">Ελληνικά (Greek)</option>
+            <option value="he">עברית (Hebrew)</option>
+            <option value="id">Indonesia</option>
+            <option value="ms">Melayu</option>
+            <option value="vi">Tiếng Việt</option>
+            <option value="th">ไทย (Thai)</option>
+            <option value="cs">Čeština</option>
+            <option value="ro">Română</option>
+            <option value="hu">Magyar</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="translator-body">
+        <div class="pane">
+          <textarea id="source-text" placeholder="Tarjima qilish uchun matn kiriting..."></textarea>
+          <div class="pane-footer">
+            <div class="pane-icons">
+              <i class="fa-solid fa-volume-high" id="speak-source" title="Ovoz chiqarish"></i>
+              <i class="fa-solid fa-copy" id="copy-source" title="Nusxalash"></i>
+            </div>
+            <div class="char-counter" id="char-count">0 / 5000</div>
+          </div>
+        </div>
+
+        <div class="pane">
+          <textarea id="target-text" placeholder="Tarjima..." readonly></textarea>
+          <div class="pane-footer">
+            <div class="pane-icons">
+              <i class="fa-solid fa-volume-high" id="speak-target" title="Ovoz chiqarish"></i>
+              <i class="fa-solid fa-copy" id="copy-target" title="Nusxalash"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 20px;">
+      <button class="translate-btn" id="translate-btn">Tarjima qilish</button>
+    </div>
+
+    <!-- Oxirgi tarjimalar tarixi paneli -->
+    <div class="history-container">
+      <div class="history-title-box">
+        <span><i class="fa-solid fa-clock-rotate-left"></i> Oxirgi tarjimalar tarixi</span>
+        <button class="clear-history" id="clear-history">Tozalash</button>
+      </div>
+      <div class="history-list" id="history-list">
+        <div style="color: var(--sub-color); font-size: 0.85rem; text-align: center; padding: 10px;">Hozircha tarix bo'sh</div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-left">
+      <a href="#"><i class="fa-solid fa-envelope"></i> aloqa</a>
+      <a href="#"><i class="fa-solid fa-code"></i> github</a>
+      <a href="#"><i class="fa-brands fa-discord"></i> discord</a>
+    </div>
+
+    <div class="theme-select-container">
+      <i class="fa-solid fa-palette"></i>
+      <select class="theme-select" id="theme-selector">
+        <option value="serika-dark">serika dark 🌙</option>
+        <option value="fire-flame">fire flame 🔥</option>
+        <option value="cyberpunk">cyberpunk ⚡</option>
+        <option value="nord">nord ❄️</option>
+        <option value="dracula">dracula 🧛‍♂️</option>
+        <option value="matrix">matrix 🟢</option>
+        <option value="monokai">monokai 🎨</option>
+        <option value="one-dark">one dark 🌃</option>
+        <option value="retro">retro 📜</option>
+        <option value="chalk">chalk 🖍️</option>
+        <option value="sunset-glow">sunset glow 🌅</option>
+        <option value="galaxy-deep">galaxy deep 🌌</option>
+        <option value="emerald-city">emerald city 🌲</option>
+        <option value="tokyo-night">tokyo night 🗼</option>
+      </select>
+    </div>
+  </footer>
+
+  <script>
+    const sourceText = document.getElementById('source-text');
+    const targetText = document.getElementById('target-text');
+    const sourceLang = document.getElementById('source-lang');
+    const targetLang = document.getElementById('target-lang');
+    const translateBtn = document.getElementById('translate-btn');
+    const swapBtn = document.getElementById('swap-langs');
+    const charCount = document.getElementById('char-count');
+    const historyList = document.getElementById('history-list');
+    const clearHistoryBtn = document.getElementById('clear-history');
+
+    let translationHistory = [];
+
+    document.getElementById('theme-selector').addEventListener('change', (e) => {
+      document.body.setAttribute('data-theme', e.target.value);
+    });
+
+    sourceText.addEventListener('input', () => {
+      const len = sourceText.value.length;
+      charCount.textContent = `${len} / 5000`;
+    });
+
+    async function performTranslation() {
+      const text = sourceText.value.trim();
+      if (!text) {
+        targetText.value = '';
+        return;
+      }
+
+      const sl = sourceLang.value;
+      const tl = targetLang.value;
+      
+      targetText.value = "Tarjima qilinmoqda...";
+      
+      try {
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(text)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        let translated = "";
+        if (data && data[0]) {
+          data[0].forEach(item => {
+            if (item[0]) translated += item[0];
+          });
+        }
+        targetText.value = translated || "Tarjima topilmadi.";
+        
+        if (translated) {
+          addToHistory(text, translated, sl, tl);
+        }
+      } catch (err) {
+        targetText.value = "Tarjima qilishda xatolik yuz berdi.";
+      }
+    }
+
+    function addToHistory(src, tgt, sl, tl) {
+      translationHistory.unshift({ src, tgt, sl, tl });
+      if (translationHistory.length > 5) translationHistory.pop();
+      renderHistory();
+    }
+
+    function renderHistory() {
+      if (translationHistory.length === 0) {
+        historyList.innerHTML = `<div style="color: var(--sub-color); font-size: 0.85rem; text-align: center; padding: 10px;">Hozircha tarix bo'sh</div>`;
+        return;
+      }
+
+      historyList.innerHTML = '';
+      translationHistory.forEach((item) => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.innerHTML = `
+          <span class="history-text"><b>${item.src}</b> → ${item.tgt}</span>
+          <span class="history-lang">${item.sl.toUpperCase()} ➔ ${item.tl.toUpperCase()}</span>
+        `;
+        div.addEventListener('click', () => {
+          sourceText.value = item.src;
+          targetText.value = item.tgt;
+          sourceLang.value = item.sl;
+          targetLang.value = item.tl;
+          charCount.textContent = `${item.src.length} / 5000`;
+          performTranslation();
+        });
+        historyList.appendChild(div);
+      });
+    }
+
+    clearHistoryBtn.addEventListener('click', () => {
+      translationHistory = [];
+      renderHistory();
+    });
+
+    translateBtn.addEventListener('click', performTranslation);
+
+    sourceText.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        performTranslation();
+      }
+    });
+
+    swapBtn.addEventListener('click', () => {
+      const tempLang = sourceLang.value;
+      sourceLang.value = targetLang.value;
+      targetLang.value = tempLang;
+
+      const tempText = sourceText.value;
+      sourceText.value = targetText.value;
+      targetText.value = tempText;
+      
+      charCount.textContent = `${sourceText.value.length} / 5000`;
+    });
+
+    document.getElementById('copy-source').addEventListener('click', () => {
+      navigator.clipboard.writeText(sourceText.value);
+    });
+
+    document.getElementById('copy-target').addEventListener('click', () => {
+      navigator.clipboard.writeText(targetText.value);
+    });
+
+    function speakText(text, lang) {
+      if (!text) return;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    document.getElementById('speak-source').addEventListener('click', () => {
+      speakText(sourceText.value, sourceLang.value);
+    });
+
+    document.getElementById('speak-target').addEventListener('click', () => {
+      speakText(targetText.value, targetLang.value);
+    });
+  </script>
+</body>
+</html>
